@@ -1,0 +1,9 @@
+maxPicks: 5
+dedupeWindowDays: 7
+allowedCategories:
+  - frontend
+  - full-stack
+  - agent
+  - hybrid
+requireWhyItMatters: true
+allowFewerWhenWeak: true
