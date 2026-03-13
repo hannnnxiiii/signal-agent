@@ -7,11 +7,12 @@
     "build": "tsc -p tsconfig.json",
     "test": "vitest run",
     "test:watch": "vitest",
-    "daily": "node --loader tsx src/app/generate-daily-report.ts",
-    "schedule": "node --loader tsx src/app/scheduler.ts"
+    "daily": "node --import dotenv/config --import tsx src/app/generate-daily-report.ts",
+    "schedule": "node --import dotenv/config --import tsx src/app/scheduler.ts"
   },
   "dependencies": {
     "@anthropic-ai/claude-agent-sdk": "^0.2.74",
+    "dotenv": "^17.3.1",
     "yaml": "^2.8.2",
     "zod": "^4.3.6"
   },

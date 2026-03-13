@@ -1,6 +1,6 @@
 import { tool } from "@anthropic-ai/claude-agent-sdk";
 
-import { normalizeTrendingRepo } from "../../services/github/trending.js";
+import { parseTrendingHtml } from "../../services/github/trending.js";
 
 export async function fetchTrendingRepos() {
   const response = await fetch("https://github.com/trending");
@@ -10,25 +10,7 @@ export async function fetchTrendingRepos() {
   }
 
   const html = await response.text();
-  const matches = [...html.matchAll(/href="\/([^/"<>]+)\/([^/"<>]+)"/g)];
-  const seen = new Set<string>();
-  const repos = [];
-
-  for (const match of matches) {
-    const repo = `${match[1]}/${match[2]}`;
-    if (seen.has(repo) || repo.includes("sponsors")) {
-      continue;
-    }
-
-    seen.add(repo);
-    repos.push(normalizeTrendingRepo({ repo }));
-
-    if (repos.length >= 25) {
-      break;
-    }
-  }
-
-  return repos;
+  return parseTrendingHtml(html).slice(0, 25);
 }
 
 export const fetchTrendingTool = tool(
