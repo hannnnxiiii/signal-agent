@@ -25,4 +25,7 @@ void runDailyReportOnce().then((result) => {
   if (result) {
     console.log(result);
   }
+}).catch((error: unknown) => {
+  console.error(error instanceof Error ? error.message : String(error));
+  process.exitCode = 1;
 });

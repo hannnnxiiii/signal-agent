@@ -1,5 +1,6 @@
 import { query } from "@anthropic-ai/claude-agent-sdk";
 
+import { getRuntimeConfig } from "../config/runtime.js";
 import { buildAgentOptions } from "./options.js";
 
 const DAILY_PROMPT = `Generate today's GitHub Trending daily report.
@@ -10,8 +11,10 @@ const DAILY_PROMPT = `Generate today's GitHub Trending daily report.
 - Skip duplicates from recent history`;
 
 export function runDailyReportQuery() {
+  const config = getRuntimeConfig();
+
   return query({
     prompt: DAILY_PROMPT,
-    options: buildAgentOptions()
+    options: buildAgentOptions(config)
   });
 }
