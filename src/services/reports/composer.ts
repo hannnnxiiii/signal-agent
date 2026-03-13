@@ -1,6 +1,6 @@
 import { readFileSync } from "node:fs";
 
-import type { DailyReport } from "../../types/daily-report";
+import type { DailyReport, SelectedRepo } from "../../types/daily-report.js";
 
 const template = readFileSync(
   new URL("../../templates/daily-report.md", import.meta.url),
@@ -9,7 +9,7 @@ const template = readFileSync(
 
 export function composeDailyReport(report: DailyReport): string {
   const picks = report.picks
-    .map((pick, index) =>
+    .map((pick: SelectedRepo, index: number) =>
       [
         `### ${index + 1}. [${pick.owner}/${pick.name}](${pick.url})`,
         `- Category: ${pick.category}`,

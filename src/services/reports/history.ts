@@ -13,6 +13,7 @@ export interface RunState {
 export interface HistoryStore {
   load(date: string): Promise<RunState | null>;
   save(state: RunState): Promise<void>;
+  canPublish(date: string): Promise<boolean>;
 }
 
 export function createFileBackedHistoryStore(rootDir: string): HistoryStore {
@@ -36,6 +37,10 @@ export function createFileBackedHistoryStore(rootDir: string): HistoryStore {
 
       await mkdir(rootDir, { recursive: true });
       await writeFile(path, JSON.stringify(state, null, 2), "utf8");
+    },
+    async canPublish(date) {
+      const current = await this.load(date);
+      return current?.status !== "published";
     }
   };
 }

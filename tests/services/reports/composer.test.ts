@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 
-import { composeDailyReport } from "../../../src/services/reports/composer";
+import { composeDailyReport } from "../../../src/services/reports/composer.js";
 
 describe("composeDailyReport", () => {
   it("renders a markdown report with selected repositories", () => {

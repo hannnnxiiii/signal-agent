@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 
-import { normalizeTrendingRepo } from "../../../src/services/github/trending";
+import { normalizeTrendingRepo } from "../../../src/services/github/trending.js";
 
 describe("normalizeTrendingRepo", () => {
   it("normalizes owner, name, description, and language", () => {

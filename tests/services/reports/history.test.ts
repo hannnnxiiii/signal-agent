@@ -4,7 +4,7 @@ import { join } from "node:path";
 
 import { afterEach, describe, expect, it } from "vitest";
 
-import { createFileBackedHistoryStore } from "../../../src/services/reports/history";
+import { createFileBackedHistoryStore } from "../../../src/services/reports/history.js";
 
 const tempDirs: string[] = [];
 
@@ -30,5 +30,21 @@ describe("history store", () => {
 
     expect(loaded?.status).toBe("published");
     expect(loaded?.selectedRepos).toEqual(["acme/agent-ui"]);
+  });
+
+  it("reports an already published date as not publishable", async () => {
+    const root = await mkdtemp(join(tmpdir(), "signal-agent-history-"));
+    tempDirs.push(root);
+
+    const store = createFileBackedHistoryStore(root);
+
+    await store.save({
+      date: "2026-03-14",
+      status: "published",
+      selectedRepos: ["acme/agent-ui"]
+    });
+
+    await expect(store.canPublish("2026-03-14")).resolves.toBe(false);
+    await expect(store.canPublish("2026-03-15")).resolves.toBe(true);
   });
 });
