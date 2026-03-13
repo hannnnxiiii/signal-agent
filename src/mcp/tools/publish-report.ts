@@ -7,6 +7,12 @@ import { createFileBackedHistoryStore } from "../../services/reports/history.js"
 
 const historyStore = createFileBackedHistoryStore("data/state");
 
+export function extractSelectedReposFromMarkdown(markdown: string): string[] {
+  return [...markdown.matchAll(/### \d+\. \[([^/\]]+\/[^\]]+)\]\(https:\/\/github\.com\/[^\)]+\)/g)].map(
+    (match) => match[1]
+  );
+}
+
 export const publishReportTool = tool(
   "publish_report",
   "Write a report file and commit it to git.",
@@ -33,7 +39,7 @@ export const publishReportTool = tool(
     await historyStore.save({
       date,
       status: "published",
-      selectedRepos: [],
+      selectedRepos: extractSelectedReposFromMarkdown(markdown),
       reportPath,
       commitHash: result.commitHash
     });
