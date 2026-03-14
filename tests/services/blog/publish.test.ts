@@ -16,14 +16,18 @@ describe("buildHxBlogPostPayload", () => {
     ).toEqual({
       title: "GitHub Trending 日报 - 2026-03-14",
       summary: "今天的趋势更偏向 Agent 工具链。",
-      content: "# report"
+      content: "# report",
+      type: "daily_report"
     });
   });
 });
 
 describe("publishToHxBlog", () => {
   it("reuses an existing HX Blog post when the title already exists", async () => {
-    const query = vi.fn().mockResolvedValueOnce([[{ id: 42 }]]);
+    const query = vi
+      .fn()
+      .mockResolvedValueOnce([[{ id: 42 }]])
+      .mockResolvedValueOnce([{}]);
 
     const result = await publishToHxBlog(
       {
@@ -34,7 +38,12 @@ describe("publishToHxBlog", () => {
       { query }
     );
 
-    expect(query).toHaveBeenCalledTimes(1);
+    expect(query).toHaveBeenCalledTimes(2);
+    expect(query).toHaveBeenNthCalledWith(
+      2,
+      "UPDATE Post SET type = ? WHERE id = ?",
+      ["daily_report", 42]
+    );
     expect(result).toEqual({ postId: 42, skipped: true });
   });
 
@@ -60,8 +69,13 @@ describe("publishToHxBlog", () => {
     );
     expect(query).toHaveBeenNthCalledWith(
       2,
-      "INSERT INTO Post (title, summary, content, createdAt) VALUES (?, ?, ?, NOW())",
-      ["GitHub Trending 日报 - 2026-03-14", "今天的趋势更偏向 Agent 工具链。", "# report"]
+      "INSERT INTO Post (title, summary, content, type, createdAt) VALUES (?, ?, ?, ?, NOW())",
+      [
+        "GitHub Trending 日报 - 2026-03-14",
+        "今天的趋势更偏向 Agent 工具链。",
+        "# report",
+        "daily_report"
+      ]
     );
     expect(result).toEqual({ postId: 99, skipped: false });
   });

@@ -12,6 +12,7 @@ interface HxBlogPostPayload {
   title: string;
   summary: string;
   content: string;
+  type: "daily_report";
 }
 
 interface QueryResultRow {
@@ -32,7 +33,8 @@ export function buildHxBlogPostPayload(input: PublishToHxBlogInput): HxBlogPostP
   return {
     title: `GitHub Trending 日报 - ${input.date}`,
     summary: input.overview,
-    content: input.markdown
+    content: input.markdown,
+    type: "daily_report"
   };
 }
 
@@ -72,12 +74,13 @@ async function publishWithQuery(
   const existingPost = existingRows[0]?.[0];
 
   if (existingPost) {
+    await query("UPDATE Post SET type = ? WHERE id = ?", [payload.type, existingPost.id]);
     return { postId: existingPost.id, skipped: true };
   }
 
   const insertRows = (await query(
-    "INSERT INTO Post (title, summary, content, createdAt) VALUES (?, ?, ?, NOW())",
-    [payload.title, payload.summary, payload.content]
+    "INSERT INTO Post (title, summary, content, type, createdAt) VALUES (?, ?, ?, ?, NOW())",
+    [payload.title, payload.summary, payload.content, payload.type]
   )) as [InsertResult];
 
   return { postId: insertRows[0].insertId, skipped: false };
