@@ -1,10 +1,10 @@
-# GitHub Trending Daily Report - {{date}}
+# GitHub Trending 日报 - {{date}}
 
-## Overview
+## 概览
 {{overview}}
 
-## Picks
+## 精选仓库
 {{picks}}
 
-## Closing Note
+## 结语
 {{closingNote}}

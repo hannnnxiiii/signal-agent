@@ -12,9 +12,9 @@ export function composeDailyReport(report: DailyReport): string {
     .map((pick: SelectedRepo, index: number) =>
       [
         `### ${index + 1}. [${pick.owner}/${pick.name}](${pick.url})`,
-        `- Category: ${pick.category}`,
-        `- Summary: ${pick.summary}`,
-        `- Why it matters: ${pick.whyItMatters}`
+        `- 分类：${pick.category}`,
+        `- 简介：${pick.summary}`,
+        `- 值得关注：${pick.whyItMatters}`
       ].join("\n")
     )
     .join("\n\n");

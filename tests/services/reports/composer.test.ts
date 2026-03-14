@@ -20,7 +20,8 @@ describe("composeDailyReport", () => {
       closingNote: "Expect more agent-native UI repos this week."
     });
 
-    expect(markdown).toContain("# GitHub Trending Daily Report - 2026-03-14");
+    expect(markdown).toContain("# GitHub Trending 日报 - 2026-03-14");
     expect(markdown).toContain("[acme/agent-ui](https://github.com/acme/agent-ui)");
+    expect(markdown).toContain("- 分类：frontend");
   });
 });
