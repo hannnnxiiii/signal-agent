@@ -7,7 +7,9 @@ export interface RunState {
   selectedRepos: string[];
   reportPath?: string;
   commitHash?: string;
+  blogPostId?: number;
   failureReason?: string;
+  failureStage?: "git" | "blog" | "state";
 }
 
 export interface HistoryStore {

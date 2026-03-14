@@ -3,6 +3,7 @@ interface RuntimeEnv {
   ANTHROPIC_BASE_URL?: string;
   ANTHROPIC_MODEL?: string;
   GITHUB_TOKEN?: string;
+  HX_BLOG_DATABASE_URL?: string;
 }
 
 export interface RuntimeConfig {
@@ -10,6 +11,7 @@ export interface RuntimeConfig {
   anthropicBaseUrl?: string;
   githubToken?: string;
   model?: string;
+  hxBlogDatabaseUrl?: string;
 }
 
 export function getRuntimeConfig(env: RuntimeEnv = process.env): RuntimeConfig {
@@ -23,6 +25,7 @@ export function getRuntimeConfig(env: RuntimeEnv = process.env): RuntimeConfig {
     anthropicApiKey: env.ANTHROPIC_API_KEY,
     anthropicBaseUrl: env.ANTHROPIC_BASE_URL,
     githubToken: env.GITHUB_TOKEN,
-    model: env.ANTHROPIC_MODEL
+    model: env.ANTHROPIC_MODEL,
+    hxBlogDatabaseUrl: env.HX_BLOG_DATABASE_URL
   };
 }
